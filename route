@@ -1,0 +1,48 @@
+
+var mongo = require("./utils/connector");
+
+
+function getPayroll(req, callback) {
+   let jsonResponse = {};
+    mongo.connect(mongoLogin, function (mongoConn) {
+        console.log('Connected to mongo at: ' + mongoLogin);
+
+    };
+    let req_param = req 
+    let req_param_value = req
+    let collection = mongoConn.collection('payroll');
+        collection.find({'#TODO': #TODO }).toArray(function(err, result) {
+                if (err) {
+                var msg = "Error Occured";
+                jsonResponse = {
+                    "statusCode": 500,
+                    "result": "Error",
+                    "message": msg
+                };
+               
+                callback(null, jsonResponse);
+            } else if (result !== null) {
+                var msg = "";
+                jsonResponse = {
+                    "statusCode": 201,
+                    "result": "success",
+                    "link": result,
+                    "message": msg
+                };
+                // res.send(jsonResponse);
+                callback(null, jsonResponse);
+            } else {
+                var msg = "Error Occured";
+                jsonResponse = {
+                    "statusCode": 400,
+                    "result": "Error",
+                    "message": msg
+                };
+                // res.send(jsonResponse);
+                callback(null, jsonResponse);
+            }
+        });
+        mongo.releaseConnection(mongoConn);
+    }
+
+    exports.getPayroll = getPayroll;
